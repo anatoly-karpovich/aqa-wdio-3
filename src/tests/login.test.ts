@@ -49,6 +49,12 @@ describe("[UI] Login", () => {
   });
 
   it("Should login with valid credentials", async function () {
+    // await browser.pause(5000);
+    // await browser.setTimeout({
+    //   pageLoad: 10000,
+    //   script: 60000,
+    //   implicit: 5000,
+    // });
     await $(usernameInputSelector).setValue(validUserName);
     await $(passwordInputSelector).setValue(validPassword);
     await $(loginButtonSelector).click();

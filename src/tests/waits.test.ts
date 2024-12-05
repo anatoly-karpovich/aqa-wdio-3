@@ -1,3 +1,5 @@
+//TODO: npm run test -- --spec="./src/tests/waits.test.ts"
+
 describe("Dynamically loaded elements", async () => {
   const dynamicLoadingSelector = 'a[href="/dynamic_loading"]'; //a[.='Dynamic Loading']
   const linkSelector = (linkName: string) => `a[href="/${linkName}"]`;
@@ -5,10 +7,6 @@ describe("Dynamically loaded elements", async () => {
   const example2Selector = 'a[href*="2"]'; //a[contains(@href, '2')]
   const startButtonSelector = "div#start button"; //div[@id="start"]/button
   const finishLabelSelector = '//div[@id="finish"]/h4'; //'#finish > h4'
-
-  before(async function () {
-    await browser.maximizeWindow();
-  });
 
   beforeEach(async function () {
     await browser.url("https://the-internet.herokuapp.com/");

@@ -1,3 +1,5 @@
+//TODO: npm run test -- --spec="./src/tests/login.test.ts"
+
 interface ILogin {
   title: string;
   subheader: string;
@@ -37,10 +39,6 @@ describe("[UI] Login", () => {
     usernameLabel: "Username",
     button: "Login",
   };
-
-  before(async function () {
-    await browser.maximizeWindow();
-  });
 
   beforeEach(async function () {
     await browser.url("https://the-internet.herokuapp.com/");

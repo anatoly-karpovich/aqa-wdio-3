@@ -24,8 +24,8 @@ export const config: WebdriverIO.Config = {
   //
   specs: [
     // ToDo: define location for spec files here
-    // "./src/tests/**/*.test.ts",
-    "./src/tests/waits.test.ts",
+    "./src/tests/**/*.test.ts",
+    // "./src/tests/waits.test.ts",
   ],
   // Patterns to exclude.
   exclude: [
@@ -190,8 +190,9 @@ export const config: WebdriverIO.Config = {
    * @param {Array.<String>} specs        List of spec file paths that are to be run
    * @param {object}         browser      instance of created browser/device session
    */
-  // before: function (capabilities, specs) {
-  // },
+  before: async function (capabilities, specs) {
+    await browser.maximizeWindow();
+  },
   /**
    * Runs before a WebdriverIO command gets executed.
    * @param {string} commandName hook command name

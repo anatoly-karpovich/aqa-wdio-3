@@ -12,7 +12,7 @@ import {
   LOGIN_FORM_SUCCESS_MESSAGES,
   NEGATIVE_REGISTRATION_TEST_DATA,
   VALID_REGISTRATION_TEST_DATA,
-} from "../../data/login-form/register.data";
+} from "../../../data/login-form/register.data";
 
 //TODO: to run test: npm run test -- --spec="./src/tests/registration.test.ts"
 

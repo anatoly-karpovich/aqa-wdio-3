@@ -1,0 +1,27 @@
+import { ICredentials } from "../../data/types/signIn.types";
+import { SalesPortalPage } from "./salesPortal.page";
+
+class SignInPage extends SalesPortalPage {
+  readonly ["Email input"] = "#emailinput";
+  readonly ["Password input"] = "#passwordinput";
+  readonly ["Login button"] = 'button[type="submit"]';
+
+  async waitForPageOpened(): Promise<void> {
+    await this.waitForDisplayed(this["Login button"]);
+  }
+
+  async fillCredentials(credentials: ICredentials) {
+    await this.setValue(this["Email input"], credentials.email);
+    await this.setValue(this["Password input"], credentials.password);
+  }
+
+  async clickOnLoginButton() {
+    await this.click(this["Login button"]);
+  }
+
+  async open() {
+    await this.openPage("/aqa-course-project/");
+  }
+}
+
+export default new SignInPage();

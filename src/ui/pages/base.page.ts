@@ -37,4 +37,12 @@ export abstract class BasePage {
     const text = await element.getText();
     return text;
   }
+
+  async openPage(url: string) {
+    await browser.url(url);
+  }
+
+  async deleteCookies(cookieNames: string[]) {
+    await browser.deleteCookies(cookieNames);
+  }
 }

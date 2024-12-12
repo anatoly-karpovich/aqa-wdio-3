@@ -1,8 +1,17 @@
 import { SalesPortalPage } from "../salesPortal.page";
+import deleteProductModal from "./deleteProduct.modal";
 
 class ProductsPage extends SalesPortalPage {
+  readonly ["Delete Modal"] = deleteProductModal;
   readonly ["Add New Product"] = "button.page-title-button";
   readonly Title = '//h2[.="Products List "]';
+  readonly ["Table row"] = (productName: string) => `//tr[./td[.="${productName}"]]`;
+  readonly ["Product Name in table"] = (productName: string) => `${this["Table row"](productName)}/td[1]`;
+  readonly ["Product Price in table"] = (productName: string) => `${this["Table row"](productName)}/td[2]`;
+  readonly ["Product Manufacturer in table"] = (productName: string) => `${this["Table row"](productName)}/td[3]`;
+  readonly ["Product Creation Date in table"] = (productName: string) => `${this["Table row"](productName)}/td[4]`;
+  readonly ["Product Delete button in table"] = (productName: string) =>
+    `${this["Table row"](productName)}//button[@title="Delete"]`;
 
   async clickOnAddNewProduct() {
     await this.click(this["Add New Product"]);
@@ -11,6 +20,30 @@ class ProductsPage extends SalesPortalPage {
   async waitForPageOpened(): Promise<void> {
     await this.waitForDisplayed(this.Title);
     await this.waitForSpinnersToBeHidden("Products");
+  }
+
+  async getProductFromTable(productName: string) {
+    // const productFromTable = {
+    //   name: await this.getText(this["Product Name in table"](productName)),
+    //   price: await this.getText(this["Product Price in table"](productName)),
+    //   manufacturer: await this.getText(this["Product Manufacturer in table"](productName)),
+    //   createdOn: await this.getText(this["Product Creation Date in table"](productName)),
+    // };
+    const [name, price, manufacturer] = await Promise.all([
+      this.getText(this["Product Name in table"](productName)),
+      this.getText(this["Product Price in table"](productName)),
+      this.getText(this["Product Manufacturer in table"](productName)),
+    ]);
+
+    return {
+      name,
+      price: +price.replace("$", ""),
+      manufacturer,
+    };
+  }
+
+  async clickOnDeleteProductButton(productName: string) {
+    await this.click(this["Product Delete button in table"](productName));
   }
 }
 

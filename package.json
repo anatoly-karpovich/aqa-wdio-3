@@ -2,6 +2,7 @@
   "name": "aqa-wdio-3",
   "type": "module",
   "devDependencies": {
+    "@types/lodash": "^4.17.13",
     "@wdio/allure-reporter": "^9.2.14",
     "@wdio/cli": "^9.4.1",
     "@wdio/local-runner": "^9.4.1",
@@ -10,5 +11,8 @@
   },
   "scripts": {
     "test": "npx wdio run ./wdio.conf.ts"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
   }
 }

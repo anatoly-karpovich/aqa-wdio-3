@@ -1,6 +1,5 @@
 //TODO: npm run test -- --spec="./src/ui/tests/Products/smoke.test.ts"
 
-import * as _ from "lodash";
 import { NOFITICATIONS } from "../../../data/notifications";
 import { generateProductData } from "../../../data/products/generateProduct";
 import homePageService from "../../services/homePage.service";

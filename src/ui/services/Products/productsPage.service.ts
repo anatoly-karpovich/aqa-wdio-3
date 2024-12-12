@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { IProduct } from "../../../data/types/product.types";
 import addNewProductPage from "../../pages/Products/addNewProduct.page";
 import productsPage from "../../pages/Products/products.page";
@@ -14,11 +15,7 @@ class ProductsPageService extends SalesPortalPageService {
 
   async checkProductInTable(product: IProduct) {
     const actualProductData = await this.productsPage.getProductFromTable(product.name);
-    const expectedProductData = {
-      name: product.name,
-      price: product.price,
-      manufacturer: product.manufacturer,
-    };
+    const expectedProductData = _.pick(product, ["name", "price", "manufacturer"]);
     expect(actualProductData).toEqual(expectedProductData);
   }
 

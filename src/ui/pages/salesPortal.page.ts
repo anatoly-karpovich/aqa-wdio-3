@@ -9,20 +9,27 @@ export abstract class SalesPortalPage extends BasePage {
   abstract waitForPageOpened(): Promise<void>;
 
   async getNotificationByText(text: string, method: GetTextMethod = "with") {
-    await browser.waitUntil(async () => {
-      const notifications = await this.findArrayOfElements(this.Notification);
-      const notification = await notifications.find<WebdriverIO.Element>(async (n) => {
-        const notificationText = await n.getText();
-        return method === "contains" ? notificationText.includes(text) : notificationText === text;
-      });
-      return notification;
-    });
-    return await (
-      await this.findArrayOfElements(this.Notification)
-    ).find<WebdriverIO.Element>(async (n) => {
-      const notificationText = await n.getText();
-      return method === "contains" ? notificationText.includes(text) : notificationText === text;
-    });
+    let notification: WebdriverIO.Element | undefined;
+    await browser.waitUntil(
+      async () => {
+        const notifications = await this.findArrayOfElements(this.Notification);
+        const foundNotification = await notifications.find<WebdriverIO.Element>(async (n) => {
+          const notificationText = await n.getText();
+          return method === "contains" ? notificationText.includes(text) : notificationText === text;
+        });
+        if (foundNotification) {
+          notification = foundNotification;
+        }
+        return foundNotification;
+      },
+      {
+        timeout: 10000,
+        timeoutMsg: `Notification ${method} text ${text} not found`,
+      }
+    );
+    if (!notification) throw notification;
+
+    return notification;
   }
 
   async getNotificationText(text: string, method: GetTextMethod = "with") {

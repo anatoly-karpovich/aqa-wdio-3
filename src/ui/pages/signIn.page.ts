@@ -1,3 +1,4 @@
+import { SALES_PORTAL_URL } from "../../config/environment";
 import { ICredentials } from "../../data/types/signIn.types";
 import { SalesPortalPage } from "./salesPortal.page";
 
@@ -12,7 +13,7 @@ class SignInPage extends SalesPortalPage {
 
   async fillCredentials(credentials: ICredentials) {
     await this.setValue(this["Email input"], credentials.email);
-    await this.setValue(this["Password input"], credentials.password);
+    await this.setValue(this["Password input"], credentials.password, { isSecretValue: true });
   }
 
   async clickOnLoginButton() {
@@ -20,7 +21,7 @@ class SignInPage extends SalesPortalPage {
   }
 
   async open() {
-    await this.openPage("/aqa-course-project/");
+    await this.openPage(SALES_PORTAL_URL);
   }
 }
 

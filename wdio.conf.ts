@@ -1,3 +1,8 @@
+import * as dotenv from "dotenv";
+import { rimraf } from "rimraf";
+
+dotenv.config();
+
 export const config: WebdriverIO.Config = {
   //
   // ====================
@@ -31,6 +36,11 @@ export const config: WebdriverIO.Config = {
   exclude: [
     // 'path/to/excluded/files'
   ],
+
+  suites: {
+    ui_products: ["./src/ui/tests/Products/**/*.test.ts"],
+    ui_simple: ["./src/ui/tests/baseTests/**/*.test.ts"],
+  },
   //
   // ============
   // Capabilities
@@ -47,7 +57,7 @@ export const config: WebdriverIO.Config = {
   // and 30 processes will get spawned. The property handles how many capabilities
   // from the same test should run tests.
   //
-  maxInstances: 10,
+  maxInstances: 3,
   //
   // If you have trouble getting all important capabilities together, check out the
   // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -90,7 +100,7 @@ export const config: WebdriverIO.Config = {
   // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
   // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
   // gets prepended directly.
-  baseUrl: "https://anatoly-karpovich.github.io",
+  // baseUrl: "http://localhost:8080",
   //
   // Default timeout for all waitFor* commands.
   waitforTimeout: 10000,
@@ -129,7 +139,18 @@ export const config: WebdriverIO.Config = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter
-  reporters: ["spec", ["allure", { outputDir: "allure-results" }]],
+  reporters: [
+    "spec",
+    [
+      "allure",
+      {
+        outputDir: "allure-results",
+        disableWebdriverStepsReporting: true,
+        disableWebdriverScreenshotsReporting: false,
+        disableMochaHooks: false,
+      },
+    ],
+  ],
 
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
@@ -151,8 +172,9 @@ export const config: WebdriverIO.Config = {
    * @param {object} config wdio configuration object
    * @param {Array.<Object>} capabilities list of capabilities details
    */
-  // onPrepare: function (config, capabilities) {
-  // },
+  onPrepare: function (config, capabilities) {
+    rimraf.sync("./allure-results");
+  },
   /**
    * Gets executed before a worker process is spawned and can be used to initialize specific service
    * for that worker as well as modify runtime environments in an async fashion.

@@ -38,10 +38,9 @@ export abstract class SalesPortalPage extends BasePage {
   }
 
   async waitForSpinnersToBeHidden(page: string) {
-    const spinners = await this.findArrayOfElements(this.Spinner);
     await browser.waitUntil(
       async () => {
-        const result = await spinners.every(async (spinner) => !(await spinner.isDisplayed()));
+        const result = !(await this.findArrayOfElements(this.Spinner)).length;
         return result;
       },
       {

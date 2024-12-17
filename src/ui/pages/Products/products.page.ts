@@ -12,6 +12,8 @@ class ProductsPage extends SalesPortalPage {
   readonly ["Product Creation Date in table"] = (productName: string) => `${this["Table row"](productName)}/td[4]`;
   readonly ["Product Delete button in table"] = (productName: string) =>
     `${this["Table row"](productName)}//button[@title="Delete"]`;
+  readonly ["Product Edit button in table"] = (productName: string) =>
+    `${this["Table row"](productName)}//button[@title="Edit"]`;
 
   async clickOnAddNewProduct() {
     await this.click(this["Add New Product"]);
@@ -23,12 +25,6 @@ class ProductsPage extends SalesPortalPage {
   }
 
   async getProductFromTable(productName: string) {
-    // const productFromTable = {
-    //   name: await this.getText(this["Product Name in table"](productName)),
-    //   price: await this.getText(this["Product Price in table"](productName)),
-    //   manufacturer: await this.getText(this["Product Manufacturer in table"](productName)),
-    //   createdOn: await this.getText(this["Product Creation Date in table"](productName)),
-    // };
     const [name, price, manufacturer] = await Promise.all([
       this.getText(this["Product Name in table"](productName)),
       this.getText(this["Product Price in table"](productName)),
@@ -44,6 +40,10 @@ class ProductsPage extends SalesPortalPage {
 
   async clickOnDeleteProductButton(productName: string) {
     await this.click(this["Product Delete button in table"](productName));
+  }
+
+  async clickOnEditProductButton(productName: string) {
+    await this.click(this["Product Edit button in table"](productName));
   }
 }
 

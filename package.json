@@ -3,6 +3,8 @@
   "type": "module",
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",
+    "@types/ajv": "^0.0.5",
+    "@types/chai": "^5.0.1",
     "@types/dotenv": "^6.1.1",
     "@types/lodash": "^4.17.13",
     "@types/rimraf": "^3.0.2",
@@ -20,7 +22,9 @@
     "report-open": "npm run report && allure open allure-report"
   },
   "dependencies": {
+    "ajv": "^8.17.1",
     "allure-commandline": "^2.32.0",
+    "chai": "^5.1.2",
     "dotenv": "^16.4.7",
     "lodash": "^4.17.21",
     "rimraf": "^6.0.1"

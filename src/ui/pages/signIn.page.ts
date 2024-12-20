@@ -12,7 +12,7 @@ class SignInPage extends SalesPortalPage {
   }
 
   async fillCredentials(credentials: ICredentials) {
-    await this.setValue(this["Email input"], credentials.email);
+    await this.setValue(this["Email input"], credentials.username);
     await this.setValue(this["Password input"], credentials.password, { isSecretValue: true });
   }
 

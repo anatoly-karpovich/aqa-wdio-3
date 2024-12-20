@@ -3,16 +3,23 @@ import { logAction, logStep } from "../../utils/reporter/decorators";
 export type ActionContext = {
   isSecretValue?: boolean;
 };
+
+type SelectorOrLocator = string | WebdriverIO.Element;
+
+function isStringSelector(selector: SelectorOrLocator): selector is string {
+  return typeof selector === "string";
+}
+
 export abstract class BasePage {
-  async findElement(selector: string) {
-    return $(selector);
+  async findElement(selector: SelectorOrLocator): Promise<WebdriverIO.Element> {
+    return isStringSelector(selector) ? await $(selector).getElement() : selector;
   }
 
-  async findArrayOfElements(selector: string) {
+  async findArrayOfElements(selector: SelectorOrLocator) {
     return await $$(selector).getElements();
   }
 
-  async waitForDisplayed(selector: string, reverse = false, timeout = 30000) {
+  async waitForDisplayed(selector: SelectorOrLocator, reverse = false, timeout = 30000) {
     const element = await this.findElement(selector);
     await element.waitForDisplayed({
       reverse,
@@ -29,19 +36,19 @@ export abstract class BasePage {
   }
 
   @logAction("Set {text} into element with selector {selector}")
-  async setValue(selector: string, value: string | number, context?: ActionContext) {
+  async setValue(selector: SelectorOrLocator, value: string | number, context?: ActionContext) {
     const input = await this.waitForDisplayed(selector);
     await input.setValue(value);
   }
 
   @logAction("Select dropdown value from {selector}")
-  async selectDropdownValue(selector: string, value: string | number) {
+  async selectDropdownValue(selector: SelectorOrLocator, value: string | number) {
     const select = await this.waitForDisplayed(selector);
     await select.selectByVisibleText(value);
   }
 
   @logStep("Get text from ${selector}")
-  async getText(selector: string) {
+  async getText(selector: SelectorOrLocator) {
     const element = await this.waitForDisplayed(selector);
     const text = await element.getText();
     return text;

@@ -14,7 +14,7 @@ export abstract class SalesPortalPage extends BasePage {
       async () => {
         const notifications = await this.findArrayOfElements(this.Notification);
         const foundNotification = await notifications.find<WebdriverIO.Element>(async (n) => {
-          const notificationText = await n.getText();
+          const notificationText = await this.getText(n);
           return method === "contains" ? notificationText.includes(text) : notificationText === text;
         });
         if (foundNotification) {
@@ -34,7 +34,7 @@ export abstract class SalesPortalPage extends BasePage {
 
   async getNotificationText(text: string, method: GetTextMethod = "with") {
     const notification = await this.getNotificationByText(text, method);
-    return await notification.getText();
+    return await this.getText(notification);
   }
 
   async waitForSpinnersToBeHidden(page: string) {

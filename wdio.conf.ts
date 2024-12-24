@@ -40,6 +40,7 @@ export const config: WebdriverIO.Config = {
   suites: {
     ui_products: ["./src/ui/tests/Products/**/*.test.ts"],
     ui_simple: ["./src/ui/tests/baseTests/**/*.test.ts"],
+    api_products: ["./src/api/tests/**/*.test.ts"],
   },
   //
   // ============

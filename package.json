@@ -4,6 +4,7 @@
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",
     "@types/ajv": "^0.0.5",
+    "@types/axios": "^0.9.36",
     "@types/chai": "^5.0.1",
     "@types/dotenv": "^6.1.1",
     "@types/lodash": "^4.17.13",
@@ -18,12 +19,14 @@
     "test": "npx wdio run ./wdio.conf.ts",
     "test:ui-products": "npm run test -- --suite ui_products",
     "test:ui-simple": "npm run test -- --suite ui_simple",
+    "test:api-products": "npm run test -- --suite api_products",
     "report": "allure generate allure-results -o allure-report --clean",
     "report-open": "npm run report && allure open allure-report"
   },
   "dependencies": {
     "ajv": "^8.17.1",
     "allure-commandline": "^2.32.0",
+    "axios": "^1.7.9",
     "chai": "^5.1.2",
     "dotenv": "^16.4.7",
     "lodash": "^4.17.21",

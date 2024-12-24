@@ -1,3 +1,5 @@
+import { IResponseFields } from "./api.types";
+
 export interface IProduct {
   name: string;
   manufacturer: MANUFACTURERS;
@@ -15,4 +17,17 @@ export enum MANUFACTURERS {
   XIAOMI = "Xiaomi",
   AMAZON = "Amazon",
   TESLA = "Tesla",
+}
+
+export interface IProductFromResponse extends IProduct {
+  _id: string;
+  createdOn: string;
+}
+
+export interface IProductResponse extends IResponseFields {
+  Product: IProductFromResponse;
+}
+
+export interface IProductsResponse extends IResponseFields {
+  Products: IProductFromResponse[];
 }

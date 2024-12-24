@@ -1,25 +1,24 @@
 import Ajv from "ajv";
 import { expect } from "chai";
+import { IResponse, IResponseFields } from "../../data/types/api.types";
 
-export function validateJsonSchema(schema: object, body: object) {
+export function validateJsonSchema<T extends IResponseFields>(schema: object, response: IResponse<T>) {
   const ajv = new Ajv();
   const validate = ajv.compile(schema);
-  const isValid = validate(body);
-
-  if (isValid) {
-    console.log("Data is valid according to the schema.");
-  } else {
-    console.log("Data is not valid according to the schema.");
+  const isValidSchema = validate(response.body);
+  if (validate.errors) {
     console.log(validate.errors);
   }
-  expect(isValid).to.equal(true);
+  expect(isValidSchema).to.be.true;
 }
 
-export async function valudateResponse(
-  body: { IsSuccess: boolean; ErrorMessage: null | string },
+export function validateResponse<T extends IResponseFields>(
+  response: IResponse<T>,
+  status: number,
   IsSuccess: boolean,
-  ErrorMessage: string | null
+  ErrorMessage: null | string
 ) {
-  expect(body.IsSuccess).to.equal(IsSuccess);
-  expect(body.ErrorMessage).to.equal(ErrorMessage);
+  expect(response.status).to.equal(status);
+  expect(response.body.IsSuccess).to.equal(IsSuccess);
+  expect(response.body.ErrorMessage).to.equal(ErrorMessage);
 }

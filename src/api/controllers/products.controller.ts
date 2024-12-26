@@ -3,6 +3,8 @@ import { IProduct, IProductResponse, IProductsResponse } from "../../data/types/
 import { IRequestOptions } from "../../data/types/api.types";
 import { AxiosApiClient } from "../apiClients/axios.apiClient";
 import { logStep } from "../../utils/reporter/decorators";
+import { IProductRequestParams } from "../../data/types/requestParams";
+import { convertRequestParams } from "../../utils/request";
 
 class ProductsController {
   constructor(private apiClient = new AxiosApiClient()) {}
@@ -52,14 +54,18 @@ class ProductsController {
   }
 
   @logStep("Get All Products via API")
-  async getAll(token: string) {
+  async getAll(token: string, params?: IProductRequestParams) {
+    let urlParams = "";
+    if (params) {
+      urlParams = convertRequestParams(params as Record<string, string>);
+    }
     const options: IRequestOptions = {
       method: "get",
       headers: {
         "content-type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      url: apiConfig.endpoints.Products,
+      url: apiConfig.endpoints.Products + urlParams,
       baseURL: apiConfig.baseUrl,
     };
     return await this.apiClient.send<IProductsResponse>(options);

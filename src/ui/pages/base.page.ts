@@ -62,4 +62,8 @@ export abstract class BasePage {
   async deleteCookies(cookieNames: string[]) {
     await browser.deleteCookies(cookieNames);
   }
+
+  async getCookie(cookieName: string) {
+    return (await browser.getCookies(cookieName))[0];
+  }
 }

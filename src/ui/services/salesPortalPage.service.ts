@@ -15,4 +15,9 @@ export abstract class SalesPortalPageService {
   async signOut() {
     await this.basePage.deleteCookies(["Authorization"]);
   }
+
+  async getToken() {
+    const token = await this.basePage.getCookie("Authorization");
+    return token.value;
+  }
 }

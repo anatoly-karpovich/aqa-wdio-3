@@ -1,34 +1,33 @@
 //TODO: npm run test -- --spec="./src/ui/tests/Products/smoke/edit.test.ts"
 
-import { NOFITICATIONS } from "../../../../data/notifications";
-import { generateProductData } from "../../../../data/products/generateProduct";
+import _ from "lodash";
+import productApiService from "../../../../api/service/productApi.service";
+import { SignInApiService } from "../../../../api/service/signInApiService.service";
 import { IProduct, MANUFACTURERS } from "../../../../data/types/product.types";
 import homePageService from "../../../services/homePage.service";
-import addNewProductPageService from "../../../services/Products/addNewProductPage.service";
 import editProductPageService from "../../../services/Products/editProductPage.service";
 import productsPageService from "../../../services/Products/productsPage.service";
 import signInPageService from "../../../services/signInPage.service";
 
 describe("[UI] [Products] Smoke", async function () {
-  let newProductData: IProduct;
+  const signInApiService = new SignInApiService();
 
   beforeEach(async function () {
-    newProductData = generateProductData();
+    const token = await signInApiService.signInAsAdmin();
+    await productApiService.create(token);
     await signInPageService.openSalesPortal();
     await signInPageService.loginAsAdmin();
+
     await homePageService.openProductsPage();
-    await productsPageService.openAddNewProductPage();
-    await addNewProductPageService.populate(newProductData);
-    await productsPageService.validateNotification(NOFITICATIONS.PRODUCT_CREATED);
   });
 
   it("Should open Edit Product page with created product", async function () {
-    await productsPageService.openEditProductPage(newProductData.name);
-    await editProductPageService.checkPageTitle(newProductData.name);
+    await productsPageService.openEditProductPage(productApiService.getCreatedProduct().name);
+    await editProductPageService.checkPageTitle(productApiService.getCreatedProduct().name);
   });
 
   it("Should validate Product data on Edit Product page", async function () {
-    await productsPageService.openEditProductPage(newProductData.name);
+    await productsPageService.openEditProductPage(productApiService.getCreatedProduct().name);
     const actualObject: IProduct = {
       name: await $("#inputName").getValue(),
       amount: +(await $("#inputAmount").getValue()),
@@ -37,12 +36,11 @@ describe("[UI] [Products] Smoke", async function () {
       notes: await $("#textareaNotes").getValue(),
     };
 
-    expect(actualObject).toMatchObject({ ...newProductData });
+    expect(actualObject).toMatchObject({ ..._.omit(productApiService.getCreatedProduct(), ["_id", "createdOn"]) });
   });
 
   afterEach(async () => {
-    // await productsPageService.deleteProduct(newProductData.name);
-    // await productsPageService.validateNotification(NOFITICATIONS.PRODUCT_DELETED);
+    await productApiService.delete(signInApiService.getToken());
     await signInPageService.signOut();
   });
 });

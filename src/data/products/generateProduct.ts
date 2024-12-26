@@ -4,11 +4,11 @@ import { faker } from "@faker-js/faker";
 
 export function generateProductData(customData?: Partial<IProduct>): IProduct {
   return {
-    ...customData,
     name: faker.commerce.product() + faker.number.int({ min: 1, max: 100000 }),
     manufacturer: getRandomEnumValue(MANUFACTURERS),
     amount: faker.number.int({ min: 0, max: 999 }),
     price: faker.number.int({ min: 1, max: 99999 }),
     notes: faker.string.alphanumeric({ length: 250 }),
+    ...customData,
   };
 }

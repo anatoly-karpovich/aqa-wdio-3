@@ -24,7 +24,7 @@ class SignInPageService extends SalesPortalPageService {
   @logStep("Login as admin")
   async loginAsAdmin() {
     await this.login({
-      email: ADMIN_USERNAME,
+      username: ADMIN_USERNAME,
       password: ADMIN_PASSWORD,
     });
   }

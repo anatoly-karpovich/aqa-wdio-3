@@ -18,7 +18,7 @@ export class SignInApiService {
     return this.getToken();
   }
 
-  private setToken(token: string) {
+  setToken(token: string) {
     this.token = token;
   }
 
